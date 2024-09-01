@@ -38,7 +38,11 @@ class CustomerServiceTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDao, customerDTOMapper, passwordEncoder, s3Service, s3Buckets);
+        underTest = new CustomerService(customerDao,
+                customerDTOMapper,
+                passwordEncoder,
+                s3Service,
+                s3Buckets);
     }
 
     @Test

@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Random;
-import java.util.UUID;
 
 @SpringBootApplication
 public class Main {
@@ -26,10 +25,16 @@ public class Main {
     @Bean
     CommandLineRunner runner(
             CustomerRepository customerRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            S3Service s3Service,
+            S3Buckets s3Buckets) {
         return args -> {
-            createRandomCustomer(customerRepository, passwordEncoder);
-            // testBucketUploadAndDownload(s3Service, s3Buckets);
+            // postgresql insertion
+//            for (int i = 0; i < 10; i++) {
+//                createRandomCustomer(customerRepository, passwordEncoder);
+//            }
+            // aws insertion
+            testBucketUploadAndDownload(s3Service, s3Buckets);
         };
     }
 
@@ -37,13 +42,13 @@ public class Main {
                                                     S3Buckets s3Buckets) {
         s3Service.putObject(
                 s3Buckets.getCustomer(),
-                "foo/bar/jamila",
+                "foo/bar/jamilaaa",
                 "Hello World".getBytes()
         );
 
         byte[] obj = s3Service.getObject(
                 s3Buckets.getCustomer(),
-                "foo/bar/jamila"
+                "foo/bar/jamilaaa"
         );
 
         System.out.println("Hooray: " + new String(obj));
@@ -67,5 +72,4 @@ public class Main {
         customerRepository.save(customer);
         System.out.println(email);
     }
-
 }
